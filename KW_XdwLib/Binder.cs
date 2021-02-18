@@ -30,13 +30,6 @@ namespace KW_XdwLib
             _mode.AuthMode = Xdwapi.XDW_AUTH_NODIALOGUE;
         }
 
-        /// <summary>
-        /// ハンドルの解放
-        /// </summary>
-        ~Binder()
-        {
-
-        }
 
         /// <summary>
         /// バインダーを作成する
