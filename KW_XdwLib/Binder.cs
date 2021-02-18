@@ -181,6 +181,7 @@ namespace KW_XdwLib
             return 1;
         }
 
+        #region IDisposableによるバインダーハンドル解放
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -213,5 +214,6 @@ namespace KW_XdwLib
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }
