@@ -14,10 +14,11 @@ namespace KW_XdwLib
     /// 1:正常終了
     /// 0以下：各エラーコード参照
     /// </summary>
-    public class Binder
+    public class Binder : IDisposable
     {
         private Xdwapi.XDW_DOCUMENT_HANDLE _handle;
         private Xdwapi.XDW_OPEN_MODE_EX _mode;
+        private bool disposedValue;
         private const string _extension = ".xbd";
 
         public Binder() {
@@ -34,10 +35,7 @@ namespace KW_XdwLib
         /// </summary>
         ~Binder()
         {
-            if (_handle != null)
-            {
-                Xdwapi.XDW_CloseDocumentHandle(_handle);
-            }
+
         }
 
         /// <summary>
@@ -181,6 +179,39 @@ namespace KW_XdwLib
             }
 
             return 1;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: マネージド状態を破棄します (マネージド オブジェクト)
+                    if (_handle != null)
+                    {
+                        Xdwapi.XDW_CloseDocumentHandle(_handle);
+                    }
+                }
+
+                // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
+                // TODO: 大きなフィールドを null に設定します
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
+        // ~Binder()
+        // {
+        //     // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
