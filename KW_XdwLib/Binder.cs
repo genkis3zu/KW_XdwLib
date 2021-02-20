@@ -41,20 +41,6 @@ namespace KW_XdwLib
         {
             int api_result;
 
-            if ((_handle != null) && (_mode != null))
-            {
-                api_result = Xdwapi.XDW_OpenDocumentHandle(filepath, ref _handle, _mode);
-                if (api_result < 0)
-                {
-                    // オープンエラー
-                    return api_result;
-                }
-            }
-            else
-            {
-                throw new Exception("ハンドルか、またはモードの設定がされていません");
-            }
-
             string fullpath = filepath + "\\" + filename + _extension;
 
             api_result = Xdwapi.XDW_CreateBinder(fullpath, null);
