@@ -14,7 +14,7 @@ namespace KW_XdwLib
     /// 1:正常終了
     /// 0以下：各エラーコード参照
     /// </summary>
-    public class DWDocumentBinder : DWDocument, IDisposable
+    public class DWDocumentBinder : DWDocument
     {
         private const string _extension = ".xbd";
 

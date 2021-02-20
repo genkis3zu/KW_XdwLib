@@ -7,37 +7,42 @@ using FujiXerox.DocuWorks.Toolkit;
 
 namespace KW_XdwLib
 {
-    public class DWDocumentFile : DWDocument, IDisposable
+    public class DWDocumentFile : DWDocument
     {
-        public DWDocumentFile() : base() { }
+        /// <summary>
+        /// DocuWorks文章に対しては
+        /// </summary>
+        /// <param name="filepath"></param>
+        public DWDocumentFile(string filepath) : base()
+        {
+            _filepath = filepath;
+        }
 
         /// <summary>
-        /// DocuWorks文章を開く
+        /// 文章がDocuWorks文章かどうかをチェックする
         /// </summary>
-        /// <param name="filepath">ファイル名を含む文章へのフルパス</param>
-        /// <returns>1:正常終了, 0以下:各エラーコード対応</returns>
-        public int Open(string filepath)
+        /// <returns>true:DocuWorks文章,false:XDW_DOCUMENT_INFOのDocTypeがXDW_DT_DOCUMENTでないか、GetDocumentInfomationでエラーが出ている</returns>
+        public bool IsDWDocument()
         {
-            int api_result = Xdwapi.XDW_OpenDocumentHandle(filepath, ref _handle, _mode);
-
+            Xdwapi.XDW_DOCUMENT_INFO info = new Xdwapi.XDW_DOCUMENT_INFO();
+            int api_result = Xdwapi.XDW_GetDocumentInformation(_handle, ref info);
             if (api_result < 0)
             {
-                return api_result;
+                return false;
             }
 
+            if (info.DocType == Xdwapi.XDW_DT_DOCUMENT)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        public int AddAnnotation()
+        {
             return 1;
         }
-
-        /// <summary>
-        /// DocuWorks文章を閉じる
-        /// </summary>
-        public void Close()
-        {
-            if (_handle != null)
-            {
-                Xdwapi.XDW_CloseDocumentHandle(_handle);
-            }
-        }
-
     }
 }
