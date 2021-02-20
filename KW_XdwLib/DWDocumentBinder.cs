@@ -14,22 +14,11 @@ namespace KW_XdwLib
     /// 1:正常終了
     /// 0以下：各エラーコード参照
     /// </summary>
-    public class Binder : IDisposable
+    public class DWDocumentBinder : DWDocument, IDisposable
     {
-        private Xdwapi.XDW_DOCUMENT_HANDLE _handle;
-        private Xdwapi.XDW_OPEN_MODE_EX _mode;
-        private bool disposedValue;
         private const string _extension = ".xbd";
 
-        public Binder() {
-            _handle = new Xdwapi.XDW_DOCUMENT_HANDLE();
-            _mode = new Xdwapi.XDW_OPEN_MODE_EX();
-
-            // とりあえず、現状はバインダーは新規作成されるものとして考える
-            _mode.Option = Xdwapi.XDW_OPEN_UPDATE;
-            _mode.AuthMode = Xdwapi.XDW_AUTH_NODIALOGUE;
-        }
-
+        public DWDocumentBinder() { }
 
         /// <summary>
         /// バインダーを作成する
@@ -39,9 +28,12 @@ namespace KW_XdwLib
         /// <returns>1:正常終了, 0以下：各エラーコード参照</returns>
         public int Create(string filepath, string filename)
         {
-            int api_result;
+            int api_result = 0;
 
             string fullpath = filepath + "\\" + filename + _extension;
+
+            // うーん・・・ここで入れるのはどうかなぁ・・
+            _filepath = fullpath;
 
             api_result = Xdwapi.XDW_CreateBinder(fullpath, null);
             if (api_result < 0)
@@ -52,6 +44,7 @@ namespace KW_XdwLib
 
             return 1;
         }
+
 
         /// <summary>
         /// バインダーの先頭へDocuWorksファイルを挿入する
@@ -118,7 +111,7 @@ namespace KW_XdwLib
         /// <summary>
         /// バインダーに見出し・ページ番号を設定する。
         /// </summary>
-        /// <returns></returns>
+        /// <returns>1:正常終了, 0以下:各エラーコード対応</returns>
         public int SetPageFormAttribute()
         {
             Xdwapi.XDW_DOCUMENT_INFO info = new Xdwapi.XDW_DOCUMENT_INFO();
@@ -160,39 +153,5 @@ namespace KW_XdwLib
             return 1;
         }
 
-        #region IDisposableによるバインダーハンドル解放
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    // TODO: マネージド状態を破棄します (マネージド オブジェクト)
-                    if (_handle != null)
-                    {
-                        Xdwapi.XDW_CloseDocumentHandle(_handle);
-                    }
-                }
-
-                // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
-                // TODO: 大きなフィールドを null に設定します
-                disposedValue = true;
-            }
-        }
-
-        // // TODO: 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
-        // ~Binder()
-        // {
-        //     // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
-        //     Dispose(disposing: false);
-        // }
-
-        public void Dispose()
-        {
-            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-        #endregion
     }
 }

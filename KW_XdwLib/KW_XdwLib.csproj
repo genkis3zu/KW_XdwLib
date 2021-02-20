@@ -44,7 +44,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Binder.cs" />
+    <Compile Include="DWDocument.cs" />
+    <Compile Include="DWDocumentBinder.cs" />
+    <Compile Include="DWDocumentFile.cs" />
     <Compile Include="DWError.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

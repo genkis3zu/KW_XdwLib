@@ -20,7 +20,7 @@ namespace KW_XdwSample02
         {
             try
             {
-                using (var binder = new Binder())
+                using (var binder = new DWDocumentBinder())
                 {
 
                     string dwFilepath = null;       // バインダーへ追加するDW文章のフルパス
@@ -28,7 +28,7 @@ namespace KW_XdwSample02
 
                     if (args.Length > 0)
                     {
-                        dwFilepath = args[0];
+                        dwFilepath = Path.GetFullPath(args[0]);
                         dwFolderpath = Path.GetDirectoryName(dwFilepath);
                     }
 
@@ -47,9 +47,13 @@ namespace KW_XdwSample02
                         return;
                     }
 
+                    binder.Open();
+
                     binder.SetPageFormAttribute();
 
                     binder.Add(dwFilepath);
+
+                    binder.Close();
                 }
             }
             catch (Exception ex)
