@@ -7,7 +7,7 @@ using FujiXerox.DocuWorks.Toolkit;
 
 namespace KW_XdwLib
 {
-    public class DWDocument
+    public class DWDocument : IDisposable
     {
         protected Xdwapi.XDW_DOCUMENT_HANDLE _handle = null;
         protected Xdwapi.XDW_OPEN_MODE_EX _mode = null;

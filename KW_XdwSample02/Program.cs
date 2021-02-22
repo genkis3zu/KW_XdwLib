@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 
 namespace KW_XdwSample02
@@ -39,26 +40,44 @@ namespace KW_XdwSample02
                         binderName = GetBinderName(dwFilepath);
                     }
 
+                    // binderNameがnullの時は、DW文章の名前がそのままbinder名となる
                     int api_result = binder.Create(dwFolderpath, binderName);
 
                     if (api_result < 0)
                     {
-                        Console.WriteLine(DWError.GetErrorMessage(api_result));
+                        MessageBox.Show(DWError.GetErrorMessage(api_result));
                         return;
                     }
 
-                    binder.Open();
+                    api_result =  binder.Open();
+                    if (api_result < 0)
+                    {
+                        MessageBox.Show(DWError.GetErrorMessage(api_result));
+                        return;
+                    }
 
-                    binder.SetPageFormAttribute();
+                    api_result =  binder.SetPageFormAttribute();
+                    if (api_result < 0)
+                    {
+                        MessageBox.Show(DWError.GetErrorMessage(api_result));
+                        return;
+                    }
 
-                    binder.Add(dwFilepath);
+                    api_result = binder.Add(dwFilepath);
+                    if (api_result < 0)
+                    {
+                        MessageBox.Show(DWError.GetErrorMessage(api_result));
+                        return;
+                    }
 
                     binder.Close();
+
+                    return;
                 }
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.ToString());
 
             }
         }
