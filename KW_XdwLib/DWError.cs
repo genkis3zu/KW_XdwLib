@@ -4,12 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FujiXerox.DocuWorks.Toolkit;
+using NLog;
 
 namespace KW_XdwLib
 {
     public static class DWError
     {
-        public static string GetErrorMessage(int api_result)
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+
+        public static void PrintInfoLog(string str)
+        {
+            _logger.Info(str);
+        }
+
+        private static string GetErrorCode(int api_result)
         {
             StringBuilder sb = new StringBuilder();
             switch (api_result)
@@ -83,6 +91,18 @@ namespace KW_XdwLib
             }
 
             return sb.ToString();
+        }
+
+        public static string GetErrorMessage(int api_result)
+        {
+            return GetErrorCode(api_result);
+        }
+
+        public static string GetErrorMessage(int api_result, string callbackName)
+        {
+            string message = GetErrorCode(api_result);
+
+            return message + "CallBack:" + callbackName;
         }
     }
 }

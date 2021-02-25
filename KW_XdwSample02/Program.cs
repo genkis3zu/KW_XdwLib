@@ -24,51 +24,58 @@ namespace KW_XdwSample02
                 using (var binder = new DWDocumentBinder())
                 {
 
-                    string dwFilepath = null;       // バインダーへ追加するDW文章のフルパス
-                    string dwFolderpath = null;     // バインダーへ追加するDW文章があるフォルダーへのパス
+                    string dwFilePath = null;       // バインダーへ追加するDW文章のフルパス
+                    string dwFolderPath = null;     // バインダーへ追加するDW文章があるフォルダーへのパス
 
                     if (args.Length > 0)
                     {
-                        dwFilepath = Path.GetFullPath(args[0]);
-                        dwFolderpath = Path.GetDirectoryName(dwFilepath);
+                        dwFilePath = Path.GetFullPath(args[0]);
+                        dwFolderPath = Path.GetDirectoryName(dwFilePath);
+                    }
+                    else
+                    {
+                        dwFilePath = @"C:\Users\mizuy\OneDrive\Documents\DocuWorksDev\Test\スキャン文書.xdw";
+                        dwFolderPath = Directory.GetCurrentDirectory();
                     }
 
                     string binderName = null;       // バインダー名
 
-                    if (dwFilepath != null)
+                    if (dwFilePath != null)
                     {
-                        binderName = GetBinderName(dwFilepath);
+                        binderName = GetBinderName(Path.GetFileNameWithoutExtension(dwFilePath));
                     }
 
                     // binderNameがnullの時は、DW文章の名前がそのままbinder名となる
-                    int api_result = binder.Create(dwFolderpath, binderName);
+                    int api_result = binder.Create(dwFolderPath, binderName);
 
                     if (api_result < 0)
                     {
-                        MessageBox.Show(DWError.GetErrorMessage(api_result));
+                        MessageBox.Show(DWError.GetErrorMessage(api_result, "binder.Create"));
                         return;
                     }
 
                     api_result =  binder.Open();
                     if (api_result < 0)
                     {
-                        MessageBox.Show(DWError.GetErrorMessage(api_result));
+                        MessageBox.Show(DWError.GetErrorMessage(api_result, "binder.Open"));
                         return;
                     }
 
                     api_result =  binder.SetPageFormAttribute();
                     if (api_result < 0)
                     {
-                        MessageBox.Show(DWError.GetErrorMessage(api_result));
+                        MessageBox.Show(DWError.GetErrorMessage(api_result, "binder.SetAttribute"));
                         return;
                     }
 
-                    api_result = binder.Add(dwFilepath);
+                    api_result = binder.Add(dwFilePath);
                     if (api_result < 0)
                     {
-                        MessageBox.Show(DWError.GetErrorMessage(api_result));
+                        MessageBox.Show(DWError.GetErrorMessage(api_result, "binder.Add"));
                         return;
                     }
+
+                    // Close前にセーブが必要だと思う。
 
                     binder.Close();
 
@@ -82,17 +89,17 @@ namespace KW_XdwSample02
             }
         }
 
-        private static string GetBinderName(string dwFilepath)
+        private static string GetBinderName(string dwFileName)
         {
             // ファイル名が大体 540050_0222_パネル～とかそういう名前になっているので
             // 最初の11文字をバインダー名として追加するようする
 
-            if (dwFilepath != null)
+            if (dwFileName != null && dwFileName.Length > 12)
             {
-                return dwFilepath.Substring(0, 11);
+                return dwFileName.Substring(0, 11);
             }
 
-            return null;
+            return dwFileName;
         }
     }
 }
