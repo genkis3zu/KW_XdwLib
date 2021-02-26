@@ -105,20 +105,6 @@ namespace KW_XdwLib
         }
 
         /// <summary>
-        /// DocuWorksファイル
-        /// </summary>
-        /// <returns></returns>
-        public int Save()
-        {
-            int api_result = Xdwapi.XDW_SaveDocument(_handle);
-            if (api_result < 0)
-            {
-                return api_result;
-            }
-            return 1;
-        }
-
-        /// <summary>
         /// バインダーへDocuWorks文章を挿入する
         /// </summary>
         /// <param name="position">挿入位置</param>

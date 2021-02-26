@@ -8,6 +8,9 @@ using NLog;
 
 namespace KW_XdwLib
 {
+    /// <summary>
+    /// DocuWorksAPIエラー一覧
+    /// </summary>
     public static class DWError
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();

@@ -7,14 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace KW_XdwSample02
 {
     class Program
     {
         /// <summary>
         /// ファイルを必ず一つとるようにして、そのファイルまでの
-        /// パスを取得する
+        /// パスを取得する。
+        /// Debug用として、指定フォルダ内に新規バインダーを作り、「スキャン文章」をとりこんで
+        /// セーブするような動作にする。
         /// </summary>
         /// <param name="args">DocuWorks文章へのファイルパス</param>
         static void Main(string[] args)
@@ -51,6 +52,7 @@ namespace KW_XdwSample02
                     if (api_result < 0)
                     {
                         MessageBox.Show(DWError.GetErrorMessage(api_result, "binder.Create"));
+                        
                         return;
                     }
 

@@ -7,7 +7,7 @@ using FujiXerox.DocuWorks.Toolkit;
 
 namespace KW_XdwLib
 {
-    public class DWDocument : IDisposable
+    public abstract class DWDocument : IDisposable
     {
         protected Xdwapi.XDW_DOCUMENT_HANDLE _handle = null;
         protected Xdwapi.XDW_OPEN_MODE_EX _mode = null;
@@ -26,7 +26,7 @@ namespace KW_XdwLib
         }
 
         /// <summary>
-        /// バインダーを開く
+        /// DocuWorksファイルを開く
         /// </summary>
         /// <returns>1:正常終了, 0以下：各エラーコード参照</returns>
         public int Open()
@@ -42,7 +42,7 @@ namespace KW_XdwLib
         }
 
         /// <summary>
-        /// バインダーを閉じる
+        /// DocuWorksファイルを閉じる
         /// </summary>
         /// <returns>1:正常終了, 0以下：各エラーコード参照</returns>
         public int Close()
@@ -57,6 +57,21 @@ namespace KW_XdwLib
             return 1;
         }
 
+        /// <summary>
+        /// DocuWorksファイルを保存する。
+        /// </summary>
+        /// <returns>1:正常終了, 0以下：各エラーコード参照</returns>
+        public int Save()
+        {
+            int api_result = Xdwapi.XDW_SaveDocument(_handle);
+            if (api_result < 0)
+            {
+                return api_result;
+            }
+            return 1;
+        }
+
+        #region 破棄パターン実装
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -90,5 +105,6 @@ namespace KW_XdwLib
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }

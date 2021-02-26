@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +13,10 @@ namespace KW_XdwLib
         private const string _extentions = ".xdw";
 
         /// <summary>
-        /// DocuWorks文章に対しては
+        /// DocuWorks文章ファイルクラス。
+        /// バインダーはDWDocumentBinderを使用。
         /// </summary>
-        /// <param name="filepath"></param>
+        /// <param name="filepath">DocuWorks文章への完全パス</param>
         public DWDocumentFile(string filepath) : base()
         {
             _filepath = filepath;
@@ -26,6 +28,12 @@ namespace KW_XdwLib
         /// <returns>true:DocuWorks文章,false:XDW_DOCUMENT_INFOのDocTypeがXDW_DT_DOCUMENTでないか、GetDocumentInfomationでエラーが出ている</returns>
         public bool IsDWDocument()
         {
+            // まずは、拡張子判断をする。
+            if (Path.GetExtension(_filepath) != _extentions )
+            {
+                return false;
+            }
+
             Xdwapi.XDW_DOCUMENT_INFO info = new Xdwapi.XDW_DOCUMENT_INFO();
             int api_result = Xdwapi.XDW_GetDocumentInformation(_handle, ref info);
             if (api_result < 0)
