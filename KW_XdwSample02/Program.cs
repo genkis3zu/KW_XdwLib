@@ -61,13 +61,6 @@ namespace KW_XdwSample02
                         return;
                     }
 
-                    api_result =  binder.SetPageFormAttribute();
-                    if (api_result < 0)
-                    {
-                        MessageBox.Show(DWError.GetErrorMessage(api_result, "binder.SetAttribute"));
-                        return;
-                    }
-
                     api_result = binder.Add(dwFilePath);
                     if (api_result < 0)
                     {
@@ -75,7 +68,28 @@ namespace KW_XdwSample02
                         return;
                     }
 
-                    // Close前にセーブが必要だと思う。
+                    // 見出し・ページ番号設定
+                    api_result = binder.SetPageFormAttribute();
+                    if (api_result < 0)
+                    {
+                        MessageBox.Show(DWError.GetErrorMessage(api_result, "binder.SetAttribute"));
+                        return;
+                    }
+
+                    // 見出し・ページ番号更新
+                    api_result = binder.Update();
+                    if (api_result < 0)
+                    {
+                        MessageBox.Show(DWError.GetErrorMessage(api_result, "binder.Update"));
+                        return;
+                    }
+
+                    api_result = binder.Save();
+                    if (api_result < 0)
+                    {
+                        MessageBox.Show(DWError.GetErrorMessage(api_result, "binder.Save"));
+                        return;
+                    }
 
                     binder.Close();
 

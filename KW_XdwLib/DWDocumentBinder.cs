@@ -91,6 +91,34 @@ namespace KW_XdwLib
         }
 
         /// <summary>
+        /// DocuWorksファイルに付与された見出し・ページ番号を更新する。
+        /// </summary>
+        /// <returns>1:正常終了, 0以下:各エラーコード対応</returns>
+        public int Update()
+        {
+            int api_result = Xdwapi.XDW_UpdatePageForm(_handle, Xdwapi.XDW_PAGEFORM_STAY);
+            if (api_result < 0)
+            {
+                return api_result;
+            }
+            return 1;
+        }
+
+        /// <summary>
+        /// DocuWorksファイル
+        /// </summary>
+        /// <returns></returns>
+        public int Save()
+        {
+            int api_result = Xdwapi.XDW_SaveDocument(_handle);
+            if (api_result < 0)
+            {
+                return api_result;
+            }
+            return 1;
+        }
+
+        /// <summary>
         /// バインダーへDocuWorks文章を挿入する
         /// </summary>
         /// <param name="position">挿入位置</param>
