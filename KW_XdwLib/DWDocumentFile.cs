@@ -58,15 +58,16 @@ namespace KW_XdwLib
             // 日付印
             int annType = Xdwapi.XDW_AID_STAMP;
             int page = 1;
-            int horPos = 100;
-            int verPos = 100;
+            // horPos, verPosが小さすぎるとエラーがでる？
+            int horPos = 1000;
+            int verPos = 1000;
             // 日付印アノテーション
             Xdwapi.XDW_AA_STAMP_INITIAL_DATA initData = new Xdwapi.XDW_AA_STAMP_INITIAL_DATA();
             // 日付アノテーションのハンドル
             Xdwapi.XDW_ANNOTATION_HANDLE stampHandle = new Xdwapi.XDW_ANNOTATION_HANDLE();
 
 
-            int api_result = Xdwapi.XDW_AddAnnotation(_handle, annType, page, horPos, verPos, initData, ref stampHandle);
+            int api_result = Xdwapi.XDW_AddAnnotation(_handle, annType, page, horPos, verPos, null, ref stampHandle);
 
             if (api_result < 0)
             {
@@ -74,19 +75,23 @@ namespace KW_XdwLib
             }
 
             // 日付印の属性データを設定
-            api_result = SetStampAnnAttribute(stampHandle);
+            api_result = SetStampAnnAttribute(ref stampHandle);
+            if (api_result < 0)
+            {
+                return api_result;
+            }
 
             return 1;
         }
 
-        private int SetStampAnnAttribute(Xdwapi.XDW_ANNOTATION_HANDLE stampHandle)
+        private int SetStampAnnAttribute(ref Xdwapi.XDW_ANNOTATION_HANDLE stampHandle)
         {
             string yearStr = "21";
             string monthStr = "2";
             string dayStr = "21";
 
             // 日付印の色(XDW_COLOR_~ BLACK, MAROON, GREEN)
-            int api_result = Xdwapi.XDW_SetAnnotationAttribute(_handle, stampHandle, Xdwapi.XDW_ATN_BackColor,
+            int api_result = Xdwapi.XDW_SetAnnotationAttribute(_handle, stampHandle, Xdwapi.XDW_ATN_BorderColor,
                 Xdwapi.XDW_ATYPE_INT, Xdwapi.XDW_COLOR_RED);
             if (api_result < 0)
             {
