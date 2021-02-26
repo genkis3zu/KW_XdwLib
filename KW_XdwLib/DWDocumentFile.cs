@@ -53,7 +53,7 @@ namespace KW_XdwLib
         /// 日付印のアノテーションを貼り付ける
         /// </summary>
         /// <returns></returns>
-        public int AddStampAnnotation()
+        public int AddStampAnnotation(DateTime date, string upperTitle, string userName)
         {
             // 日付印
             int annType = Xdwapi.XDW_AID_STAMP;
@@ -66,7 +66,6 @@ namespace KW_XdwLib
             // 日付アノテーションのハンドル
             Xdwapi.XDW_ANNOTATION_HANDLE stampHandle = new Xdwapi.XDW_ANNOTATION_HANDLE();
 
-
             int api_result = Xdwapi.XDW_AddAnnotation(_handle, annType, page, horPos, verPos, null, ref stampHandle);
 
             if (api_result < 0)
@@ -75,7 +74,7 @@ namespace KW_XdwLib
             }
 
             // 日付印の属性データを設定
-            api_result = SetStampAnnAttribute(ref stampHandle);
+            api_result = SetStampAnnAttribute(ref stampHandle, date, upperTitle, userName);
             if (api_result < 0)
             {
                 return api_result;
@@ -84,11 +83,11 @@ namespace KW_XdwLib
             return 1;
         }
 
-        private int SetStampAnnAttribute(ref Xdwapi.XDW_ANNOTATION_HANDLE stampHandle)
+        private int SetStampAnnAttribute(ref Xdwapi.XDW_ANNOTATION_HANDLE stampHandle, DateTime date, string upperTitle, string userName)
         {
-            string yearStr = "21";
-            string monthStr = "2";
-            string dayStr = "21";
+            string yearStr = date.Year.ToString();
+            string monthStr = date.Month.ToString();
+            string dayStr = date.Day.ToString();
 
             // 日付印の色(XDW_COLOR_~ BLACK, MAROON, GREEN)
             int api_result = Xdwapi.XDW_SetAnnotationAttribute(_handle, stampHandle, Xdwapi.XDW_ATN_BorderColor,
@@ -109,7 +108,7 @@ namespace KW_XdwLib
 
             // 日付印の上欄文字列 : （着手日)
             api_result = Xdwapi.XDW_SetAnnotationAttribute(_handle, stampHandle, Xdwapi.XDW_ATN_TopField,
-                Xdwapi.XDW_ATYPE_STRING, "着手日");
+                Xdwapi.XDW_ATYPE_STRING, upperTitle);
 
             if (api_result < 0)
             {
@@ -118,7 +117,7 @@ namespace KW_XdwLib
 
             // 日付印の下欄文字列：(名前)
             api_result = Xdwapi.XDW_SetAnnotationAttribute(_handle, stampHandle, Xdwapi.XDW_ATN_BottomField,
-                Xdwapi.XDW_ATYPE_STRING, "清水");
+                Xdwapi.XDW_ATYPE_STRING, userName);
             if (api_result < 0)
             {
                 return api_result;

@@ -39,7 +39,7 @@ namespace KW_XdwSample01
 
                     if (!file.IsDWDocument()) return;
 
-                    api_result = file.AddStampAnnotation();
+                    api_result = file.AddStampAnnotation(DateTime.Today, "着手日", "清水");
 
                     if (api_result < 0)
                     {
