@@ -11,15 +11,22 @@ namespace KW_XdwLib
     /// <summary>
     /// DocuWorksAPIエラー一覧
     /// </summary>
-    public static class DWError
+    public static class DWErrorLogService
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public static void PrintInfoLog(string str)
+        public static void APIErrorLog(LogLevel logLevel, int api_result)
         {
-            _logger.Info(str);
+            string logMessage = GetErrorCode(api_result);
+
+            _logger.Log(logLevel, logMessage);
         }
 
+        /// <summary>
+        /// 各APIからのエラーコード戻り値から、エラーを特定して返す。
+        /// </summary>
+        /// <param name="api_result">DocuWorksAPIからのエラーコード</param>
+        /// <returns>エラーメッセージ</returns>
         private static string GetErrorCode(int api_result)
         {
             StringBuilder sb = new StringBuilder();
@@ -96,11 +103,12 @@ namespace KW_XdwLib
             return sb.ToString();
         }
 
-        public static string GetErrorMessage(int api_result)
-        {
-            return GetErrorCode(api_result);
-        }
-
+        /// <summary>
+        /// エラーメッセージと、呼出し元の関数名
+        /// </summary>
+        /// <param name="api_result">エラーコード</param>
+        /// <param name="callbackName">発生元の関数名</param>
+        /// <returns></returns>
         public static string GetErrorMessage(int api_result, string callbackName)
         {
             string message = GetErrorCode(api_result);

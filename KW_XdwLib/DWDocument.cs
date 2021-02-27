@@ -28,47 +28,47 @@ namespace KW_XdwLib
         /// <summary>
         /// DocuWorksファイルを開く
         /// </summary>
-        /// <returns>1:正常終了, 0以下：各エラーコード参照</returns>
-        public int Open()
+        public void Open()
         {
             int api_result = Xdwapi.XDW_OpenDocumentHandle(_filepath, ref _handle, _mode);
 
             if (api_result < 0)
             {
-                return api_result;
+                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                throw new Exception("DWDocument::Open関数が失敗しました");
             }
 
-            return 1;
+            return;
         }
 
         /// <summary>
         /// DocuWorksファイルを閉じる
         /// </summary>
-        /// <returns>1:正常終了, 0以下：各エラーコード参照</returns>
-        public int Close()
+        public void Close()
         {
             int api_result = Xdwapi.XDW_CloseDocumentHandle(_handle);
 
             if (api_result < 0)
             {
-                return api_result;
+                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                throw new Exception("DWDocument::Close関数が失敗しました");
             }
 
-            return 1;
+            return;
         }
 
         /// <summary>
         /// DocuWorksファイルを保存する。
         /// </summary>
-        /// <returns>1:正常終了, 0以下：各エラーコード参照</returns>
-        public int Save()
+        public void Save()
         {
             int api_result = Xdwapi.XDW_SaveDocument(_handle);
             if (api_result < 0)
             {
-                return api_result;
+                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                throw new Exception("DWDocument::Save関数が失敗しました");
             }
-            return 1;
+            return;
         }
 
         #region 破棄パターン実装

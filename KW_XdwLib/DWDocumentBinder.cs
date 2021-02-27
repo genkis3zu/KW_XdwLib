@@ -22,11 +22,11 @@ namespace KW_XdwLib
 
         /// <summary>
         /// バインダーを作成する
+        /// 同名のバインダーがすでに存在する場合は失敗する。
         /// </summary>
         /// <param name="filepath">バインダーを作成する場所へのパス</param>
         /// <param name="filename">作成するファイル名</param>
-        /// <returns>1:正常終了, 0以下：各エラーコード参照</returns>
-        public int Create(string filepath, string filename)
+        public void Create(string filepath, string filename)
         {
             int api_result = 0;
 
@@ -38,11 +38,11 @@ namespace KW_XdwLib
             api_result = Xdwapi.XDW_CreateBinder(fullpath, null);
             if (api_result < 0)
             {
-                // 作成エラー
-                return api_result;
+                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                throw new Exception("DWDocumentBinder::Create関数が失敗しました");
             }
 
-            return 1;
+            return;
         }
 
 
@@ -50,29 +50,24 @@ namespace KW_XdwLib
         /// バインダーの先頭へDocuWorksファイルを挿入する
         /// </summary>
         /// <param name="inputPath">挿入するDocuWorksファイルの絶対パス</param>
-        /// <returns>1:正常終了, 0以下:各エラーコード対応</returns>
-        public int Add(string inputPath)
+        public void Add(string inputPath)
         {
-            int api_result = this.Add(1, inputPath);
-            if (api_result < 0)
-            {
-                return api_result;
-            }
-            return 1;
+            this.Add(1, inputPath);
+            return;
         }
 
         /// <summary>
         /// DocuWorksファイルに付与された見出し・ページ番号を更新する。
         /// </summary>
-        /// <returns>1:正常終了, 0以下:各エラーコード対応</returns>
-        public int Update()
+        public void Update()
         {
             int api_result = Xdwapi.XDW_UpdatePageForm(_handle, Xdwapi.XDW_PAGEFORM_STAY);
             if (api_result < 0)
             {
-                return api_result;
+                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                throw new Exception("DWDocumentBinder::GetDocumentInformation関数が失敗しました");
             }
-            return 1;
+            return;
         }
 
         /// <summary>
@@ -80,25 +75,24 @@ namespace KW_XdwLib
         /// </summary>
         /// <param name="position">挿入位置</param>
         /// <param name="inputPath">挿入するDocuWorksファイルの絶対パス</param>
-        /// <returns>1:正常終了, 0以下:各エラーコード対応</returns>
-        public int Add(int position, string inputPath)
+        public void Add(int position, string inputPath)
         {
             int api_result = Xdwapi.XDW_InsertDocumentToBinder(_handle, position, inputPath);
 
             if (api_result < 0)
             {
-                return api_result;
+                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                throw new Exception("DWDocumentBinder::Add(position, inputPath)関数が失敗しました");
             }
 
-            return 1;
+            return;
         }
 
         /// <summary>
         /// 複数ファイルをバインダーへ挿入する
         /// </summary>
         /// <param name="inputPaths">ファイルパスのコレクション</param>
-        /// <returns>1:正常終了, 0以下:各エラーコード対応</returns>
-        public int Add(string[] inputPaths)
+        public void Add(string[] inputPaths)
         {
             foreach (string inputPath in inputPaths)
             {
@@ -106,26 +100,22 @@ namespace KW_XdwLib
                 int api_result = Xdwapi.XDW_GetDocumentInformation(_handle, ref info);
                 if (api_result < 0)
                 {
-                    return api_result;
+                    DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                    throw new Exception("DWDocumentBinder::Add::GetDocumentInformation関数が失敗しました");
                 }
 
                 int position = info.BinderSize + 1;
 
-                api_result = Add(position, inputPath);
+                Add(position, inputPath);
 
-                if (api_result < 0)
-                {
-                    return api_result;
-                }
             }
 
-            return 1;
+            return;
         }
 
         /// <summary>
         /// バインダーに見出し・ページ番号を設定する。
         /// </summary>
-        /// <returns>1:正常終了, 0以下:各エラーコード対応</returns>
         public int SetPageFormAttribute()
         {
             Xdwapi.XDW_DOCUMENT_INFO info = new Xdwapi.XDW_DOCUMENT_INFO();
