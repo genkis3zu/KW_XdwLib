@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="KW_XdwLib" GeneratedClassName="EnvSettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="WorkingSpacePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\KWSW\workspace</Value>
+    </Setting>
+    <Setting Name="LogFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\KWSW\log</Value>
+    </Setting>
+    <Setting Name="AppsDataPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\KWSW\bin</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -62,35 +62,6 @@ namespace KW_XdwLib
         }
 
         /// <summary>
-        /// 複数ファイルをバインダーへ挿入する
-        /// </summary>
-        /// <param name="inputPaths">ファイルパスのコレクション</param>
-        /// <returns>1:正常終了, 0以下:各エラーコード対応</returns>
-        public int Add(List<string> inputPaths)
-        {
-            foreach (string inputPath in inputPaths)
-            {
-                Xdwapi.XDW_DOCUMENT_INFO info = new Xdwapi.XDW_DOCUMENT_INFO();
-                int api_result = Xdwapi.XDW_GetDocumentInformation(_handle, ref info);
-                if (api_result < 0)
-                {
-                    return api_result;
-                }
-
-                int position = info.BinderSize + 1;
-
-                api_result = Add(position, inputPath);
-
-                if (api_result < 0)
-                {
-                    return api_result;
-                }
-            }
-
-            return 1;
-        }
-
-        /// <summary>
         /// DocuWorksファイルに付与された見出し・ページ番号を更新する。
         /// </summary>
         /// <returns>1:正常終了, 0以下:各エラーコード対応</returns>
@@ -117,6 +88,35 @@ namespace KW_XdwLib
             if (api_result < 0)
             {
                 return api_result;
+            }
+
+            return 1;
+        }
+
+        /// <summary>
+        /// 複数ファイルをバインダーへ挿入する
+        /// </summary>
+        /// <param name="inputPaths">ファイルパスのコレクション</param>
+        /// <returns>1:正常終了, 0以下:各エラーコード対応</returns>
+        public int Add(string[] inputPaths)
+        {
+            foreach (string inputPath in inputPaths)
+            {
+                Xdwapi.XDW_DOCUMENT_INFO info = new Xdwapi.XDW_DOCUMENT_INFO();
+                int api_result = Xdwapi.XDW_GetDocumentInformation(_handle, ref info);
+                if (api_result < 0)
+                {
+                    return api_result;
+                }
+
+                int position = info.BinderSize + 1;
+
+                api_result = Add(position, inputPath);
+
+                if (api_result < 0)
+                {
+                    return api_result;
+                }
             }
 
             return 1;
