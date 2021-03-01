@@ -30,7 +30,7 @@ namespace KW_XdwLib
         /// <summary>
         /// NLogのInfoログ
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">情報ログ</param>
         public static void InfoLog(string infoMessage)
         {
             _logger.Info(infoMessage);
@@ -39,7 +39,7 @@ namespace KW_XdwLib
         /// <summary>
         /// NLogのErrorログ
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="v">エラーログ</param>
         public static void ErrLog(string errMessage)
         {
             _logger.Error(errMessage);
