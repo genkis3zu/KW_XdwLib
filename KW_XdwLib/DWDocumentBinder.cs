@@ -18,6 +18,8 @@ namespace KW_XdwLib
     {
         private const string _extension = ".xbd";
 
+        public string Extention { get; }
+
         public DWDocumentBinder() { }
 
         /// <summary>
