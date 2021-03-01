@@ -58,15 +58,26 @@ namespace KW_XdwLib
             // 日付印
             int annType = Xdwapi.XDW_AID_STAMP;
             int page = 1;
+            // 用紙のサイズを取得する。
+            Xdwapi.XDW_PAGE_INFO_EX pageInfo = new Xdwapi.XDW_PAGE_INFO_EX();
+            int api_result = Xdwapi.XDW_GetPageInformation(_handle, page, ref pageInfo);
+
+            if (api_result < 0)
+            {
+                DWErrorLogService.APIErrorLog(api_result);
+                throw new Exception("DWDocumentFiles::GetPageInfomation関数が失敗しました");
+            }
+
             // horPos, verPosが小さすぎるとエラーがでる？
-            int horPos = 1000;
-            int verPos = 1000;
+            // 左上を0, 0として、考える
+            int horPos = pageInfo.Width - 1000;
+            int verPos = pageInfo.Height- 1000;
             // 日付印アノテーション
             Xdwapi.XDW_AA_STAMP_INITIAL_DATA initData = new Xdwapi.XDW_AA_STAMP_INITIAL_DATA();
             // 日付アノテーションのハンドル
             Xdwapi.XDW_ANNOTATION_HANDLE stampHandle = new Xdwapi.XDW_ANNOTATION_HANDLE();
 
-            int api_result = Xdwapi.XDW_AddAnnotation(_handle, annType, page, horPos, verPos, null, ref stampHandle);
+            api_result = Xdwapi.XDW_AddAnnotation(_handle, annType, page, horPos, verPos, null, ref stampHandle);
 
             if (api_result < 0)
             {
@@ -77,7 +88,7 @@ namespace KW_XdwLib
             // 日付印の属性データを設定
             SetStampAnnAttribute(ref stampHandle, date, upperTitle, userName);
 
-            DWErrorLogService.InfoLog(string.Format("AddStampAnnotation:{1},{2},{3}", date.ToString(), upperTitle, userName));
+            DWErrorLogService.InfoLog("AddStampAnnotation:" + date.ToString() + upperTitle + userName);
 
             return;
         }
@@ -158,7 +169,7 @@ namespace KW_XdwLib
                 throw new Exception("DWDocumentFiles::SetAnnotationAttribute(XDW_ATN_DayField)関数が失敗しました");
             }
 
-            DWErrorLogService.InfoLog(string.Format("SetStampAnnAttribute:{1},{2},{3}", date.ToString(), upperTitle, userName));
+            DWErrorLogService.InfoLog("SetStampAnnAttribute:" + date.ToString() + upperTitle + userName);
 
             return;
         }
