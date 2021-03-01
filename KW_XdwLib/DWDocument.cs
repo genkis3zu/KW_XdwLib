@@ -71,6 +71,21 @@ namespace KW_XdwLib
             return;
         }
 
+        /// <summary>
+        /// ファイルを移動させる
+        /// </summary>
+        public void Move(string destPath)
+        {
+            if (_filepath == null)
+            {
+                return;
+            }
+
+            System.IO.File.Move(_filepath, destPath);
+
+            _filepath = destPath;
+        }
+
         #region 破棄パターン実装
         protected virtual void Dispose(bool disposing)
         {

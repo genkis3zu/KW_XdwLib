@@ -11,5 +11,8 @@
     <Setting Name="AppsDataPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\KWSW\bin</Value>
     </Setting>
+    <Setting Name="TrashBinPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\KWSW\trash</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

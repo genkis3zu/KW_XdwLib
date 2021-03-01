@@ -58,5 +58,17 @@ namespace KW_XdwLib {
                 this["AppsDataPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\KWSW\\trash")]
+        public string TrashBinPath {
+            get {
+                return ((string)(this["TrashBinPath"]));
+            }
+            set {
+                this["TrashBinPath"] = value;
+            }
+        }
     }
 }
