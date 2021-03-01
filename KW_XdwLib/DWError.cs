@@ -15,13 +15,35 @@ namespace KW_XdwLib
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public static void APIErrorLog(LogLevel logLevel, int api_result)
+        /// <summary>
+        /// DocuWorksAPI エラーログ
+        /// </summary>
+        /// <param name="logLevel"></param>
+        /// <param name="api_result"></param>
+        public static void APIErrorLog(int api_result)
         {
             string logMessage = GetErrorCode(api_result);
 
-            _logger.Log(logLevel, logMessage);
+            _logger.Error(logMessage + ":" + api_result.ToString());
         }
 
+        /// <summary>
+        /// NLogのInfoログ
+        /// </summary>
+        /// <param name="message"></param>
+        public static void InfoLog(string infoMessage)
+        {
+            _logger.Info(infoMessage);
+        }
+
+        /// <summary>
+        /// NLogのErrorログ
+        /// </summary>
+        /// <param name="v"></param>
+        public static void ErrLog(string errMessage)
+        {
+            _logger.Error(errMessage);
+        }
         /// <summary>
         /// 各APIからのエラーコード戻り値から、エラーを特定して返す。
         /// </summary>
@@ -102,6 +124,8 @@ namespace KW_XdwLib
 
             return sb.ToString();
         }
+
+
 
         /// <summary>
         /// エラーメッセージと、呼出し元の関数名

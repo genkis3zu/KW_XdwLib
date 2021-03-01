@@ -34,7 +34,7 @@ namespace KW_XdwLib
 
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocument::Open関数が失敗しました");
             }
 
@@ -50,7 +50,7 @@ namespace KW_XdwLib
 
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocument::Close関数が失敗しました");
             }
 
@@ -65,7 +65,7 @@ namespace KW_XdwLib
             int api_result = Xdwapi.XDW_SaveDocument(_handle);
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocument::Save関数が失敗しました");
             }
             return;

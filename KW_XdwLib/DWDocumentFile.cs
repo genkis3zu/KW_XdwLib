@@ -38,7 +38,7 @@ namespace KW_XdwLib
             int api_result = Xdwapi.XDW_GetDocumentInformation(_handle, ref info);
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocumentFile::GetDocumentInformation関数が失敗しました");
             }
 
@@ -70,12 +70,14 @@ namespace KW_XdwLib
 
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocumentFiles::AddAnnotation関数が失敗しました");
             }
 
             // 日付印の属性データを設定
             SetStampAnnAttribute(ref stampHandle, date, upperTitle, userName);
+
+            DWErrorLogService.InfoLog(string.Format("AddStampAnnotation:{1},{2},{3}", date.ToString(), upperTitle, userName));
 
             return;
         }
@@ -98,7 +100,7 @@ namespace KW_XdwLib
                 Xdwapi.XDW_ATYPE_INT, Xdwapi.XDW_COLOR_RED);
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocumentFiles::SetAnnotationAttribute(XDW_ATN_BorderColor)関数が失敗しました");
             }
 
@@ -108,7 +110,7 @@ namespace KW_XdwLib
 
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocumentFiles::SetAnnotationAttribute(XDW_ATN_DateStyle)関数が失敗しました");
             }
 
@@ -118,7 +120,7 @@ namespace KW_XdwLib
 
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocumentFiles::SetAnnotationAttribute(XDW_ATN_TopField)関数が失敗しました");
             }
 
@@ -127,7 +129,7 @@ namespace KW_XdwLib
                 Xdwapi.XDW_ATYPE_STRING, userName);
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocumentFiles::SetAnnotationAttribute(XDW_ATN_BottomField)関数が失敗しました");
             }
 
@@ -136,7 +138,7 @@ namespace KW_XdwLib
                 Xdwapi.XDW_ATYPE_STRING, yearStr);
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocumentFiles::SetAnnotationAttribute(XDW_ATN_YearField)関数が失敗しました");
             }
 
@@ -144,7 +146,7 @@ namespace KW_XdwLib
                 Xdwapi.XDW_ATYPE_STRING, monthStr);
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocumentFiles::SetAnnotationAttribute(XDW_ATN_MonthField)関数が失敗しました");
             }
 
@@ -152,10 +154,11 @@ namespace KW_XdwLib
                 Xdwapi.XDW_ATYPE_STRING, dayStr);
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocumentFiles::SetAnnotationAttribute(XDW_ATN_DayField)関数が失敗しました");
             }
 
+            DWErrorLogService.InfoLog(string.Format("SetStampAnnAttribute:{1},{2},{3}", date.ToString(), upperTitle, userName));
 
             return;
         }

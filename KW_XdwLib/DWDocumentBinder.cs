@@ -38,7 +38,7 @@ namespace KW_XdwLib
             api_result = Xdwapi.XDW_CreateBinder(fullpath, null);
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocumentBinder::Create関数が失敗しました");
             }
 
@@ -64,7 +64,7 @@ namespace KW_XdwLib
             int api_result = Xdwapi.XDW_UpdatePageForm(_handle, Xdwapi.XDW_PAGEFORM_STAY);
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog( api_result);
                 throw new Exception("DWDocumentBinder::GetDocumentInformation関数が失敗しました");
             }
             return;
@@ -81,7 +81,7 @@ namespace KW_XdwLib
 
             if (api_result < 0)
             {
-                DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                DWErrorLogService.APIErrorLog(api_result);
                 throw new Exception("DWDocumentBinder::Add(position, inputPath)関数が失敗しました");
             }
 
@@ -100,7 +100,7 @@ namespace KW_XdwLib
                 int api_result = Xdwapi.XDW_GetDocumentInformation(_handle, ref info);
                 if (api_result < 0)
                 {
-                    DWErrorLogService.APIErrorLog(NLog.LogLevel.Error, api_result);
+                    DWErrorLogService.APIErrorLog( api_result);
                     throw new Exception("DWDocumentBinder::Add::GetDocumentInformation関数が失敗しました");
                 }
 
