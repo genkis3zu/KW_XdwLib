@@ -55,23 +55,14 @@
     <Compile Include="DWDocument.cs" />
     <Compile Include="DWDocumentBinder.cs" />
     <Compile Include="DWDocumentFile.cs" />
+    <Compile Include="DWEnvIni.cs" />
     <Compile Include="DWError.cs" />
-    <Compile Include="EnvSettings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>EnvSettings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="app.config" />
-    <None Include="EnvSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>EnvSettings.Designer.cs</LastGenOutput>
-    </None>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

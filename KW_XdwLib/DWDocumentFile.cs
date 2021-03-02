@@ -70,8 +70,8 @@ namespace KW_XdwLib
 
             // horPos, verPosが小さすぎるとエラーがでる？
             // 左上を0, 0として、考える
-            int horPos = pageInfo.Width - 1000;
-            int verPos = pageInfo.Height- 1000;
+            int horPos = pageInfo.Width - 2000;
+            int verPos = 1000;
             // 日付印アノテーション
             Xdwapi.XDW_AA_STAMP_INITIAL_DATA initData = new Xdwapi.XDW_AA_STAMP_INITIAL_DATA();
             // 日付アノテーションのハンドル
