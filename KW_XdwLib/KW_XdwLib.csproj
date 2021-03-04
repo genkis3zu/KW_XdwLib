@@ -52,6 +52,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DWAnnotation.cs" />
+    <Compile Include="DWAnnRectAttribute.cs" />
+    <Compile Include="DWAnnTextAttribute.cs" />
     <Compile Include="DWDocument.cs" />
     <Compile Include="DWDocumentBinder.cs" />
     <Compile Include="DWDocumentFile.cs" />
