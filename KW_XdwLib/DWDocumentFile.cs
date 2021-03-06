@@ -65,16 +65,19 @@ namespace KW_XdwLib
 
             string offsetHorPos = DWEnvIni.GetValue("DISTRIBUTION", "DIST_LABEL_POS_OFFSET_X", "1000");
             string offsetVerPos = DWEnvIni.GetValue("DISTRIBUTION", "DIST_LABEL_POS_OFFSET_Y", "1000");
+            int width = int.Parse(DWEnvIni.GetValue("DISTRIBUTION", "DIST_LABEL_DEFAULT_WIDTH", "1000"));
+            int height = int.Parse(DWEnvIni.GetValue("DISTRIBUTION", "DIST_LABEL_DEFAULT_HEIGHT", "1000"));
             int horPos = pageInfo.Width - int.Parse(offsetHorPos);
-            int verPos = int.Parse(offsetVerPos);
+            int verPos = pageInfo.Height - int.Parse(offsetVerPos);
 
             DWAnnRectAttribute rectAttr = new DWAnnRectAttribute(1, 3, Xdwapi.XDW_COLOR_RED, 0, Xdwapi.XDW_COLOR_NONE, 1);
             DWAnnTextAttribute textAttr = new DWAnnTextAttribute(distLabel);
             DWAnnotation ann = new DWAnnotation(_handle);
 
             // 四角囲い + テキスト
-            ann.CreateRectAnnotation(page, horPos, verPos, rectAttr);
-            ann.CreateTextAnnotation(page, horPos, verPos, textAttr);
+            ann.CreateTextAnnotation(page, horPos + 100, verPos + 100, textAttr);
+            ann.CreateRectAnnotation(width, height, page, horPos, verPos, rectAttr);
+
         }
 
         /// <summary>

@@ -31,15 +31,15 @@ namespace KW_XdwLib
         /// <param name="horPos">横方向の位置</param>
         /// <param name="verPos">縦方向の位置</param>
         /// <returns>矩形アノテーションのハンドル</returns>
-        public Xdwapi.XDW_ANNOTATION_HANDLE CreateRectAnnotation(int page, int horPos, int verPos, DWAnnRectAttribute rectAttr)
+        public Xdwapi.XDW_ANNOTATION_HANDLE CreateRectAnnotation(int width, int height, int page, int horPos, int verPos, DWAnnRectAttribute rectAttr)
         {
             // 囲いの矩形
             int rectAnnType = Xdwapi.XDW_AID_RECTANGLE;
 
             Xdwapi.XDW_AA_RECT_INITIAL_DATA rectInitData = new Xdwapi.XDW_AA_RECT_INITIAL_DATA();
 
-            rectInitData.Width = int.Parse(DWEnvIni.GetValue("DISTRIBUTION", "DIST_LABEL_DEFAULT_WIDTH", "1000"));
-            rectInitData.Height = int.Parse(DWEnvIni.GetValue("DISTRIBUTION", "DIST_LABEL_DEFAULT_HEIGHT", "1000"));
+            rectInitData.Width = width;
+            rectInitData.Height = height;
 
             Xdwapi.XDW_ANNOTATION_HANDLE rectAnnHandle = new Xdwapi.XDW_ANNOTATION_HANDLE();
 
