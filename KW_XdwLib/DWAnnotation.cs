@@ -183,36 +183,15 @@ namespace KW_XdwLib
         /// 日付印アノテーションの追加
         /// </summary>
         /// <param name="date">日付印に入れる日付</param>
-        public Xdwapi.XDW_ANNOTATION_HANDLE CreateStampAnnotation(DateTime date)
+        public Xdwapi.XDW_ANNOTATION_HANDLE CreateStampAnnotation(int page, int horPos, int verPos, DWAnnStampAttribute stampAttr)
         {
             // 日付印
             int annType = Xdwapi.XDW_AID_STAMP;
-            int page = 1;
-            // 用紙のサイズを取得する。
-            Xdwapi.XDW_PAGE_INFO_EX pageInfo = new Xdwapi.XDW_PAGE_INFO_EX();
-            int api_result = Xdwapi.XDW_GetPageInformation(_handle, page, ref pageInfo);
 
-            if (api_result < 0)
-            {
-                DWErrorLogService.APIErrorLog(api_result);
-                throw new Exception("DWDocumentFiles::GetPageInfomation関数が失敗しました");
-            }
-
-            // horPos, verPosが小さすぎるとエラーがでる？
-            // 左上を0, 0として、考える
-            string iniHorPos = DWEnvIni.GetValue("STAMP", "STAMP_OFFSET_X", "2000");
-            string iniVerPos = DWEnvIni.GetValue("STAMP", "STAMP_OFFSET_Y", "1000");
-            string upperTitle = DWEnvIni.GetValue("STAMP", "STAMP_UPPER_TITLE", "着手日");
-            string userName = DWEnvIni.GetValue("STAMP", "STAMP_USER_NAME", "");
-            int horPos = pageInfo.Width - int.Parse(iniHorPos);
-            int verPos = int.Parse(iniVerPos);
-
-            // 日付印アノテーション
             Xdwapi.XDW_AA_STAMP_INITIAL_DATA initData = new Xdwapi.XDW_AA_STAMP_INITIAL_DATA();
-            // 日付アノテーションのハンドル
             Xdwapi.XDW_ANNOTATION_HANDLE stampHandle = new Xdwapi.XDW_ANNOTATION_HANDLE();
 
-            api_result = Xdwapi.XDW_AddAnnotation(_handle, annType, page, horPos, verPos, null, ref stampHandle);
+            int api_result = Xdwapi.XDW_AddAnnotation(_handle, annType, page, horPos, verPos, null, ref stampHandle);
 
             if (api_result < 0)
             {
@@ -221,9 +200,9 @@ namespace KW_XdwLib
             }
 
             // 日付印の属性データを設定
-            SetStampAnnAttribute(ref stampHandle, date, upperTitle, userName);
+            SetStampAnnAttribute(ref stampHandle, stampAttr.Date, stampAttr.UpperTitle, stampAttr.UserName);
 
-            DWErrorLogService.InfoLog("AddStampAnnotation:" + date.ToString() + upperTitle + userName);
+            DWErrorLogService.InfoLog("AddStampAnnotation:" + stampAttr.Date.ToString() + stampAttr.UpperTitle + stampAttr.UserName);
 
             return stampHandle;
         }

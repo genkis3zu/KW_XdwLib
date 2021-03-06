@@ -61,6 +61,7 @@
     <Compile Include="DWEnvIni.cs" />
     <Compile Include="DWError.cs" />
     <Compile Include="DWFileDistributor.cs" />
+    <Compile Include="DWAnnStampAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -60,8 +60,7 @@ namespace KW_XdwLib
             int page = 1;
 
             // 用紙のサイズを取得する。
-            Xdwapi.XDW_PAGE_INFO_EX pageInfo = new Xdwapi.XDW_PAGE_INFO_EX();
-            int api_result = Xdwapi.XDW_GetPageInformation(_handle, page, ref pageInfo);
+            Xdwapi.XDW_PAGE_INFO_EX pageInfo = GetPageInfo(page);
 
             string offsetHorPos = DWEnvIni.GetValue("DISTRIBUTION", "DIST_LABEL_POS_OFFSET_X", "1000");
             string offsetVerPos = DWEnvIni.GetValue("DISTRIBUTION", "DIST_LABEL_POS_OFFSET_Y", "1000");
@@ -81,17 +80,62 @@ namespace KW_XdwLib
         }
 
         /// <summary>
-        /// 日付印のアノテーションを貼り付ける
+        /// 着手日のアノテーションを貼り付ける
+        /// txtStampがtrueの時は日付印ではなくて、テキストで
         /// </summary>
-        public void AddStampAnnotation(DateTime date)
+        public void AddStampAnnotation(DateTime date, bool txtStamp)
         {
+            int page = 1;
+
+            Xdwapi.XDW_PAGE_INFO_EX pageInfo = GetPageInfo(page);
+
+            // horPos, verPosが小さすぎるとエラーがでる？
+            // 左上を0, 0として、考える
+            string iniHorPos = DWEnvIni.GetValue("STAMP", "STAMP_OFFSET_X", "2000");
+            string iniVerPos = DWEnvIni.GetValue("STAMP", "STAMP_OFFSET_Y", "1000");
+            string upperTitle = DWEnvIni.GetValue("STAMP", "STAMP_UPPER_TITLE", "着手日");
+            string userName = DWEnvIni.GetValue("STAMP", "STAMP_USER_NAME", "");
+            int horPos = pageInfo.Width - int.Parse(iniHorPos);
+            int verPos = int.Parse(iniVerPos);
             DWAnnotation ann = new DWAnnotation(_handle);
 
-            ann.CreateStampAnnotation(date);
 
+            if (txtStamp)
+            {
+                string dateString = "";
+
+                DWAnnTextAttribute txtAttr = new DWAnnTextAttribute(dateString);
+
+                ann.CreateTextAnnotation(page, horPos, verPos, txtAttr);
+            }
+            else
+            {
+
+                DWAnnStampAttribute stampAttr = new DWAnnStampAttribute(upperTitle, userName, date);
+
+                ann.CreateStampAnnotation(page, horPos, verPos, stampAttr);
+            }
             return;
         }
 
+        /// <summary>
+        /// 右上や右下に押印するために、ページのサイズ情報を取得するための
+        /// GetPageInformation
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        private Xdwapi.XDW_PAGE_INFO_EX GetPageInfo(int page)
+        {
+            var info = new Xdwapi.XDW_PAGE_INFO_EX();
+            int api_result = Xdwapi.XDW_GetPageInformation(_handle, page, ref info);
 
+            if (api_result < 0)
+            {
+                DWErrorLogService.APIErrorLog(api_result);
+                throw new Exception("DWDocumentFiles::GetPageInfomation関数が失敗しました");
+            }
+
+            return info;
+        }
     }
 }
